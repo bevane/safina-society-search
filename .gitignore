@@ -1,5 +1,6 @@
-# tmp dir
+# tmp and dat dir
 tmp/
+data/
 
 #Exectuable
 safina-society-search
