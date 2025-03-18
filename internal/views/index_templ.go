@@ -41,7 +41,7 @@ func Index() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<img width=\"100px\" src=\"/public/logo_large.png\"><h1>Safina Society Search</h1><h2>Search through Safina Society's Youtube videos</h2><div><input class=\"form-control\" type=\"search\" name=\"search\" placeholder=\"Begin Typing To Search Users...\" hx-post=\"/search\" hx-trigger=\"input changed delay:500ms, keyup[key==&#39;Enter&#39;]\" hx-target=\"#results-container\"><div id=\"results-container\"></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<img width=\"100px\" src=\"/public/logo_large.png\"><h1>Safina Society Search</h1><h2>Search through Safina Society's Youtube videos</h2><input class=\"form-control\" type=\"search\" name=\"search\" placeholder=\"Begin Typing To Search Users...\" hx-post=\"/search\" hx-trigger=\"input changed delay:500ms, keyup[key==&#39;Enter&#39;]\" hx-target=\"#results-container\"><div id=\"results-container\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
