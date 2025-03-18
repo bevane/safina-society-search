@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/bevane/safina-society-search/internal/model"
+	"github.com/bevane/safina-society-search/internal/views"
 	"github.com/meilisearch/meilisearch-go"
 )
 
@@ -24,5 +25,6 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 			Snippet:      "placeholder snippet. will be replaced later",
 		}
 	}
+	views.Results(results).Render(r.Context(), w)
 
 }

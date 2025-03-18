@@ -1,0 +1,19 @@
+package views
+
+import "github.com/bevane/safina-society-search/internal/model"
+
+templ Result(videoResult model.Result) {
+	<div>{ videoResult.Title }</div>
+}
+
+templ Results(searchResults model.Results) {
+	<div>
+		<ul>
+			for _, item := range searchResults.Items {
+				<li>
+					@Result(item)
+				</li>
+			}
+		</ul>
+	</div>
+}
