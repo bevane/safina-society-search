@@ -11,7 +11,8 @@ import (
 )
 
 func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
-	resRaw, _ := cfg.searchClient.Index("videos").SearchRaw("man", &meilisearch.SearchRequest{})
+	query := r.FormValue("search")
+	resRaw, _ := cfg.searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{})
 	searchResponse := model.SearchResponseVideos{}
 	json.Unmarshal(*resRaw, &searchResponse)
 	results := model.Results{
