@@ -1,13 +1,27 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/meilisearch/meilisearch-go"
 )
 
 func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
-	res, _ := cfg.searchClient.Index("videos").Search("man", &meilisearch.SearchRequest{})
-	json, _ := res.MarshalJSON()
-	w.Write(json)
+	resRaw, _ := cfg.searchClient.Index("videos").SearchRaw("man", &meilisearch.SearchRequest{})
+	searchResponse := searchResponseVideos{}
+	json.Unmarshal(*resRaw, &searchResponse)
+	results := Results{
+		Items: make([]Result, len(searchResponse.Hits)),
+	}
+	for i, hit := range searchResponse.Hits {
+		results.Items[i] = Result{
+			Title:        hit.Title,
+			Url:          fmt.Sprintf("https://youtu.be/%s", hit.Id),
+			ThumbnailUrl: hit.ThumbnailUrl,
+			Snippet:      "placeholder snippet. will be replaced later",
+		}
+	}
+
 }
