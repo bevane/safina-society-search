@@ -5,18 +5,19 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/bevane/safina-society-search/internal/model"
 	"github.com/meilisearch/meilisearch-go"
 )
 
 func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	resRaw, _ := cfg.searchClient.Index("videos").SearchRaw("man", &meilisearch.SearchRequest{})
-	searchResponse := searchResponseVideos{}
+	searchResponse := model.SearchResponseVideos{}
 	json.Unmarshal(*resRaw, &searchResponse)
-	results := Results{
-		Items: make([]Result, len(searchResponse.Hits)),
+	results := model.Results{
+		Items: make([]model.Result, len(searchResponse.Hits)),
 	}
 	for i, hit := range searchResponse.Hits {
-		results.Items[i] = Result{
+		results.Items[i] = model.Result{
 			Title:        hit.Title,
 			Url:          fmt.Sprintf("https://youtu.be/%s", hit.Id),
 			ThumbnailUrl: hit.ThumbnailUrl,

@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/a-h/templ"
-	"github.com/bevane/safina-society-search/views"
+	"github.com/bevane/safina-society-search/internal/views"
 	"github.com/meilisearch/meilisearch-go"
 )
 

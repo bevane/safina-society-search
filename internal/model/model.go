@@ -1,7 +1,7 @@
-package main
+package model
 
-type searchResponseVideos struct {
-	Hits               []videoHit  `json:"hits"`
+type SearchResponseVideos struct {
+	Hits               []VideoHit  `json:"hits"`
 	EstimatedTotalHits int64       `json:"estimatedTotalHits,omitempty"`
 	Offset             int64       `json:"offset,omitempty"`
 	Limit              int64       `json:"limit,omitempty"`
@@ -16,7 +16,7 @@ type searchResponseVideos struct {
 	IndexUID           string      `json:"indexUid,omitempty"`
 }
 
-type videoHit struct {
+type VideoHit struct {
 	Id           string `json:"id"`
 	ThumbnailUrl string `json:"thumbnail"`
 	Title        string `json:"title"`
