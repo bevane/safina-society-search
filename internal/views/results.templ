@@ -15,13 +15,15 @@ templ Result(videoResult model.Result) {
 }
 
 templ Results(searchResults model.Results) {
-	<div>
-		<ul class="results">
-			for _, item := range searchResults.Items {
-				<li>
-					@Result(item)
-				</li>
-			}
-		</ul>
-	</div>
+	if searchResults.Items != nil {
+		<div>
+			<ul class="results">
+				for _, item := range searchResults.Items {
+					<li>
+						@Result(item)
+					</li>
+				}
+			</ul>
+		</div>
+	}
 }

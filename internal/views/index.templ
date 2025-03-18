@@ -11,7 +11,7 @@ templ Index() {
 			name="search"
 			placeholder="Begin Typing To Search Users..."
 			hx-post="/search"
-			hx-trigger="input changed delay:500ms, keyup[key=='Enter']"
+			hx-trigger="input[this.value.length > 1] changed delay:500ms, keyup[key=='Enter']"
 			hx-target="#results-container"
 		/>
 		<div id="results-container"></div>
