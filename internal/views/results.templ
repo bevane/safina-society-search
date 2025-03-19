@@ -7,8 +7,12 @@ templ Result(videoResult model.Result) {
 		<div class="result-container">
 			<img src={ videoResult.ThumbnailUrl }/>
 			<div class="video-details">
-				<div class="title">{ videoResult.Title }</div>
-				<div class="snippet">{ videoResult.Snippet }</div>
+				<div class="title">
+					@templ.Raw(videoResult.Title)
+				</div>
+				<div class="snippet">
+					@templ.Raw(videoResult.Snippet)
+				</div>
 			</div>
 		</div>
 	</a>

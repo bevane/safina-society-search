@@ -17,8 +17,11 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	resRaw, _ := cfg.searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
-		AttributesToCrop: []string{"transcript"},
-		CropLength:       40,
+		AttributesToCrop:      []string{"transcript"},
+		CropLength:            40,
+		AttributesToHighlight: []string{"title", "transcript"},
+		HighlightPreTag:       "<mark>",
+		HighlightPostTag:      "</mark>",
 	})
 
 	searchResponse := model.SearchResponseVideos{}
@@ -28,7 +31,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	}
 	for i, hit := range searchResponse.Hits {
 		results.Items[i] = model.Result{
-			Title:        truncateString(hit.Title, 60),
+			Title:        truncateString(hit.Formatted.Title, 60),
 			Url:          fmt.Sprintf("https://youtu.be/%s", hit.Id),
 			ThumbnailUrl: hit.ThumbnailUrl,
 			Snippet:      hit.Formatted.Transcript,
