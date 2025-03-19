@@ -24,6 +24,7 @@ a {
   max-width: 800px;
   border: 1px solid #000;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  overflow: hidden;
 }
 
 .result-container img {
@@ -34,4 +35,11 @@ a {
 .video-details {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+.title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

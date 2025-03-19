@@ -31,7 +31,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	}
 	for i, hit := range searchResponse.Hits {
 		results.Items[i] = model.Result{
-			Title:        truncateString(hit.Formatted.Title, 60),
+			Title:        hit.Formatted.Title,
 			Url:          fmt.Sprintf("https://youtu.be/%s", hit.Id),
 			ThumbnailUrl: hit.ThumbnailUrl,
 			Snippet:      hit.Formatted.Transcript,
@@ -39,15 +39,4 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	}
 	views.Results(results).Render(r.Context(), w)
 
-}
-
-func truncateString(s string, maxLen int) string {
-	runes := []rune(s)
-	if len(runes) <= maxLen {
-		return s
-	}
-	if maxLen < 3 {
-		maxLen = 3
-	}
-	return string(runes[0:maxLen-3]) + "..."
 }
