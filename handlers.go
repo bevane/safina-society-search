@@ -16,7 +16,11 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		views.Results(model.Results{}).Render(r.Context(), w)
 		return
 	}
-	resRaw, _ := cfg.searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{})
+	resRaw, _ := cfg.searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
+		AttributesToCrop: []string{"transcript"},
+		CropLength:       40,
+	})
+
 	searchResponse := model.SearchResponseVideos{}
 	json.Unmarshal(*resRaw, &searchResponse)
 	results := model.Results{
@@ -27,7 +31,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 			Title:        truncateString(hit.Title, 60),
 			Url:          fmt.Sprintf("https://youtu.be/%s", hit.Id),
 			ThumbnailUrl: hit.ThumbnailUrl,
-			Snippet:      "placeholder snippet. will be replaced later",
+			Snippet:      hit.Formatted.Transcript,
 		}
 	}
 	views.Results(results).Render(r.Context(), w)

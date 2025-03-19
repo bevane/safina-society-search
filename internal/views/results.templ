@@ -3,7 +3,7 @@ package views
 import "github.com/bevane/safina-society-search/internal/model"
 
 templ Result(videoResult model.Result) {
-	<a class="result" href={ templ.URL(videoResult.Url) }>
+	<a class="result" href={ templ.URL(videoResult.Url) } target="_blank">
 		<div class="result-container">
 			<img src={ videoResult.ThumbnailUrl }/>
 			<div class="video-details">
