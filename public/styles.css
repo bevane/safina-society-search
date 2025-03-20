@@ -73,6 +73,14 @@ a {
   margin-top: -2px;
 }
 
+.matches-count {
+  display: flex;
+  justify-content: end;
+  font-size: 0.8rem;
+  color: grey;
+  margin-right: 5px;
+}
+
 mark {
   background: #CBBDDC;
 }

@@ -18,7 +18,8 @@ type SearchResponseVideos struct {
 
 type FormattedVideoHit struct {
 	VideoHit
-	Formatted VideoHit `json:"_formatted"`
+	Formatted       VideoHit        `json:"_formatted"`
+	MatchesPosition MatchesPosition `json:"_matchesPosition"`
 }
 
 type VideoHit struct {
@@ -32,8 +33,19 @@ type Result struct {
 	Url          string
 	ThumbnailUrl string
 	Snippet      string
+	MatchesCount int
 }
 
 type Results struct {
 	Items []Result
+}
+
+type MatchesPosition struct {
+	Title      []Position `json:"title"`
+	Transcript []Position `json:"transcript"`
+}
+
+type Position struct {
+	Start  int `json:"start"`
+	Length int `json:"length"`
 }

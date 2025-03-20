@@ -22,10 +22,14 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		AttributesToHighlight: []string{"title", "transcript"},
 		HighlightPreTag:       "<mark>",
 		HighlightPostTag:      "</mark>",
+		ShowMatchesPosition:   true,
 	})
 
 	searchResponse := model.SearchResponseVideos{}
-	json.Unmarshal(*resRaw, &searchResponse)
+	err := json.Unmarshal(*resRaw, &searchResponse)
+	if err != nil {
+		fmt.Println(err)
+	}
 	results := model.Results{
 		Items: make([]model.Result, len(searchResponse.Hits)),
 	}
@@ -35,6 +39,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 			Url:          fmt.Sprintf("https://youtu.be/%s", hit.Id),
 			ThumbnailUrl: hit.ThumbnailUrl,
 			Snippet:      hit.Formatted.Transcript,
+			MatchesCount: len(hit.MatchesPosition.Transcript),
 		}
 	}
 	views.Results(results).Render(r.Context(), w)

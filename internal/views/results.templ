@@ -1,6 +1,7 @@
 package views
 
 import "github.com/bevane/safina-society-search/internal/model"
+import "fmt"
 
 templ Result(videoResult model.Result) {
 	<a class="result" href={ templ.URL(videoResult.Url) } target="_blank">
@@ -12,6 +13,9 @@ templ Result(videoResult model.Result) {
 				</div>
 				<div class="snippet">
 					@templ.Raw(videoResult.Snippet)
+				</div>
+				<div class="matches-count">
+					@templ.Raw(fmt.Sprintf("<div>found <strong>%v</strong> occurences in this video</div>", videoResult.MatchesCount))
 				</div>
 			</div>
 		</div>
