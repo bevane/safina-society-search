@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"regexp"
+	"strconv"
+	"time"
 
 	"github.com/bevane/safina-society-search/internal/model"
 	"github.com/bevane/safina-society-search/internal/views"
@@ -34,9 +37,13 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		Items: make([]model.Result, len(searchResponse.Hits)),
 	}
 	for i, hit := range searchResponse.Hits {
+		timestampSeconds, err := getTimestampSecondsAtPosition(hit.Transcript, hit.MatchesPosition.Transcript[0].Start)
+		if err != nil {
+			fmt.Println(err)
+		}
 		results.Items[i] = model.Result{
 			Title:        hit.Formatted.Title,
-			Url:          fmt.Sprintf("https://youtu.be/%s", hit.Id),
+			Url:          fmt.Sprintf("https://youtu.be/%s&t=%s", hit.Id, timestampSeconds),
 			ThumbnailUrl: hit.ThumbnailUrl,
 			Snippet:      hit.Formatted.Transcript,
 			MatchesCount: len(hit.MatchesPosition.Transcript),
@@ -44,4 +51,51 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	}
 	views.Results(results).Render(r.Context(), w)
 
+}
+
+func getTimestampSecondsAtPosition(transcript string, position int) (string, error) {
+	var timestampStr string
+	r, _ := regexp.Compile("((?:\\d?\\d?:)?\\d?\\d?:\\d?\\d?)")
+	for position >= 0 {
+		// avoid looking for timestamp if position is not at a space
+		// or beginning of transcript to prevent capturing partial
+		// matches of timestamp
+		if position != 0 && string(transcript[position]) != " " {
+			position--
+			continue
+		}
+		// keep looking if timestamp is not found within the next 8 chars
+		if !r.MatchString(transcript[position : position+9]) {
+			position--
+			continue
+		}
+		timestampStr = r.FindString(transcript[position : position+9])
+		break
+	}
+	if timestampStr == "" {
+		return "", fmt.Errorf("No timestamp found")
+	}
+	if len(timestampStr) < 4 || len(timestampStr) > 7 {
+		return "", fmt.Errorf("timestamp malformed: %v", timestampStr)
+	}
+	var timeStampStrPadded string
+	switch len(timestampStr) {
+	case 4:
+		timeStampStrPadded = "00:0" + timestampStr
+	case 5:
+		timeStampStrPadded = "00:" + timestampStr
+	case 7:
+		timeStampStrPadded = "0" + timestampStr
+	default:
+	}
+	timestamp, err := time.Parse(time.TimeOnly, timeStampStrPadded)
+	if err != nil {
+		return "", err
+	}
+	reference, _ := time.Parse(time.TimeOnly, "00:00:00")
+	timestampSeconds := timestamp.Sub(reference).Seconds()
+	// offset by 2 seconds to avoid cases where the timestamp will start
+	// right at the mention of the search query
+	timestampSeconds = max(timestampSeconds-2, 0)
+	return strconv.Itoa(int(timestampSeconds)), nil
 }
