@@ -12,12 +12,16 @@ body {
   align-items: center;
 }
 
+body h2 {
+  margin-top: -10px;
+}
+
 ul {
   list-style: none;
 }
 
 ul li {
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 a {
@@ -26,11 +30,20 @@ a {
 }
 
 .result-container {
+  background: white;
+  border-radius: 7px;
   display: flex;
   max-width: 800px;
-  border: 1px solid black;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   overflow: hidden;
+  position: relative;
+  top: 0;
+  transition: all 0.1s ease-in;
+}
+
+.result-container:hover {
+  top: -2px;
+  box-shadow: 0 4px 5px rgba(0,0,0,0.3);
 }
 
 .result-container img {
@@ -45,9 +58,23 @@ a {
 }
 
 .title {
+  color: var(--primary-color);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.snippet {
+  font-size: 0.85rem;
+  margin: 5px;
+  margin-top: -2px;
+}
+
+mark {
+  background: #CBBDDC;
 }
 
 .search-container {
@@ -60,6 +87,7 @@ a {
   cursor: text;
   display: flex;
   flex-direction: row;
+  transition: all 0.2s ease;
 }
 
 .search-container:focus-within {
