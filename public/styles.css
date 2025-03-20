@@ -1,5 +1,11 @@
+:root {
+  --primary-color: #391247;
+  --secondary-color: #9747FF;
+  --bg-color: #fbf8f5;
+}
+
 body {
-  background: #fbf8f5;
+  background: var(--bg-color);
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
   flex-direction: column;
@@ -16,13 +22,13 @@ ul li {
 
 a {
   text-decoration: none;
-  color: #000;
+  color: black;
 }
 
 .result-container {
   display: flex;
   max-width: 800px;
-  border: 1px solid #000;
+  border: 1px solid black;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   overflow: hidden;
 }
@@ -45,16 +51,19 @@ a {
 }
 
 .search-container {
-  width: 400px;
+  background-color: white;
+  max-width: 400px;
   height: 30px;
   padding: 2px;
   border-radius: 10px;
-  border: 1px solid #dcdcdc;
-  outline-color: none;
+  border: 2px solid lightgrey;
   cursor: text;
-  display:flex;
+  display: flex;
   flex-direction: row;
-  align-items: center;
+}
+
+.search-container:focus-within {
+  border: 2px solid var(--secondary-color);
 }
 
 input {
@@ -76,13 +85,3 @@ input:focus {
   max-width: 15px;
   margin: 0px 15px;
 }
-
-.search-icon img {
-  background: linear-gradient(to right, orange, yellow, orange);
-  mask-image: linear-gradient(to bottom, rgba(56, 18, 71, 0), rgba(56, 18, 71, 1))'
-}
-
-/* .search-icon path { */
-/*   stroke: #ff0000; */
-/*   stroke-width: 30px; */
-/* } */
