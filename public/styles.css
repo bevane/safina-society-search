@@ -43,3 +43,46 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.search-container {
+  width: 400px;
+  height: 30px;
+  padding: 2px;
+  border-radius: 10px;
+  border: 1px solid #dcdcdc;
+  outline-color: none;
+  cursor: text;
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+input {
+  color: rgba(0,0,0,.87);
+  outline-color: none;
+  background-color: transparent;
+  border:none;
+  height:100%;
+  flex-grow:1;
+  font-size: 15px;
+  padding: 10px;
+}
+
+input:focus {
+  outline: none;
+}
+
+.search-icon {
+  max-width: 15px;
+  margin: 0px 15px;
+}
+
+.search-icon img {
+  background: linear-gradient(to right, orange, yellow, orange);
+  mask-image: linear-gradient(to bottom, rgba(56, 18, 71, 0), rgba(56, 18, 71, 1))'
+}
+
+/* .search-icon path { */
+/*   stroke: #ff0000; */
+/*   stroke-width: 30px; */
+/* } */
