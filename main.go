@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
 
 	"github.com/a-h/templ"
 	"github.com/bevane/safina-society-search/internal/views"
+	"github.com/joho/godotenv"
 	"github.com/meilisearch/meilisearch-go"
 )
 
@@ -17,8 +20,10 @@ type Config struct {
 
 func main() {
 	app := Config{}
-	app.port = 3000
-	searchClient := meilisearch.New("http://localhost:7700", meilisearch.WithAPIKey("aSampleMasterKey"))
+	godotenv.Load(".env")
+	app.port, _ = strconv.Atoi(os.Getenv("PORT"))
+
+	searchClient := meilisearch.New(os.Getenv("MEILISEARCH_URL"), meilisearch.WithAPIKey(os.Getenv("MEILISEARCH_API_KEY")))
 	app.searchClient = searchClient
 
 	publicHandler := http.StripPrefix("/public", http.FileServer(http.Dir("./public")))
