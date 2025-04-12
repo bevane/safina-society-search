@@ -64,6 +64,9 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 }
 
 func getTimestampSecondsAtPosition(text string, position int) (string, error) {
+	if text == "" {
+		return "", fmt.Errorf("Error getting timestamp: text is empty")
+	}
 	var timestampStr string
 	r, _ := regexp.Compile("((?:\\d?\\d?:)?\\d?\\d?:\\d?\\d?)")
 	for position >= 0 {
