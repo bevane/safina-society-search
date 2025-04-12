@@ -50,7 +50,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 			Title: hit.Formatted.Title,
 			// construct url linking to timestamp of the crop/snippet
 			Url:          fmt.Sprintf("https://youtu.be/%s&t=%s", hit.Id, timestampSeconds),
-			ThumbnailUrl: hit.ThumbnailUrl,
+			ThumbnailUrl: fmt.Sprintf("https://i.ytimg.com/vi/%s/hqdefault.jpg", hit.Id),
 			Snippet:      hit.Formatted.Transcript,
 			MatchesCount: len(hit.MatchesPosition.Transcript),
 		}

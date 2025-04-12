@@ -23,10 +23,9 @@ type FormattedVideoHit struct {
 }
 
 type VideoHit struct {
-	Id           string `json:"id"`
-	ThumbnailUrl string `json:"thumbnail"`
-	Title        string `json:"title"`
-	Transcript   string `json:"transcript"`
+	Id         string `json:"id"`
+	Title      string `json:"title"`
+	Transcript string `json:"transcript"`
 }
 type Result struct {
 	Title        string
