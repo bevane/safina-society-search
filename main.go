@@ -23,7 +23,10 @@ func main() {
 	godotenv.Load(".env")
 	app.port, _ = strconv.Atoi(os.Getenv("PORT"))
 
-	searchClient := meilisearch.New(os.Getenv("MEILISEARCH_URL"), meilisearch.WithAPIKey(os.Getenv("MEILISEARCH_API_KEY")))
+	searchClient, err := meilisearch.Connect(os.Getenv("MEILISEARCH_URL"), meilisearch.WithAPIKey(os.Getenv("MEILISEARCH_API_KEY")))
+	if err != nil {
+		fmt.Printf("Unable to connect to meilisearch: %s\n", err.Error())
+	}
 	app.searchClient = searchClient
 
 	publicHandler := http.StripPrefix("/public", http.FileServer(http.Dir("./public")))

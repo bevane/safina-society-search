@@ -19,7 +19,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		views.Results(model.Results{}).Render(r.Context(), w)
 		return
 	}
-	resRaw, _ := cfg.searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
+	resRaw, err := cfg.searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
 		AttributesToCrop:      []string{"transcript"},
 		CropLength:            40,
 		AttributesToHighlight: []string{"title", "transcript"},
@@ -27,9 +27,13 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		HighlightPostTag:      "</mark>",
 		ShowMatchesPosition:   true,
 	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	searchResponse := model.SearchResponseVideos{}
-	err := json.Unmarshal(*resRaw, &searchResponse)
+	err = json.Unmarshal(*resRaw, &searchResponse)
 	if err != nil {
 		fmt.Println(err)
 	}
