@@ -41,7 +41,11 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		Items: make([]model.Result, len(searchResponse.Hits)),
 	}
 	for i, hit := range searchResponse.Hits {
-		// will get the left most timestamp in the snippet
+		// look for the timestamp from the middle of the cropped transcript
+		// as the crop is centered around the word
+		// it is still possible to miss the timestamp since the search term
+		// is centered in regards to number of words instead of number of
+		// chars
 		timestampSeconds, err := getTimestampSeconds(hit.Formatted.Transcript)
 		if err != nil {
 			fmt.Println(err)
@@ -59,7 +63,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func getTimestampSeconds(text string) (string, error) {
+func getTimestampSecondsAtPosition(text string) (string, error) {
 	if text == "" {
 		return "", fmt.Errorf("Error getting timestamp: text is empty")
 	}
