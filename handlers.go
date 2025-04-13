@@ -111,12 +111,12 @@ func cleanSnippet(text string) string {
 
 func truncateSnippetAroundCenter(text string, cropLength int) string {
 	words := strings.Fields(text)
-	if len(words) <= cropLength*2 {
+	if len(words) <= cropLength {
 		return text
 	}
 	mid := len(words) / 2
-	start := mid - cropLength
-	end := mid + cropLength
+	start := mid - cropLength/2
+	end := mid + cropLength/2
 	truncatedWords := words[start:end]
 	return strings.Join(truncatedWords, " ")
 }
