@@ -6,7 +6,9 @@ import (
 	"net/http"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
+	"unicode"
 
 	"github.com/bevane/safina-society-search/internal/model"
 	"github.com/bevane/safina-society-search/internal/views"
@@ -43,6 +45,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	for i, hit := range searchResponse.Hits {
 		// will get the left most timestamp in the snippet
 		timestampSeconds, err := getTimestampSeconds(hit.Formatted.Transcript)
+		cleanedSnippet := cleanSnippet(hit.Formatted.Transcript)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -51,7 +54,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 			// construct url linking to timestamp of the crop/snippet
 			Url:          fmt.Sprintf("https://youtu.be/%s&t=%s", hit.Id, timestampSeconds),
 			ThumbnailUrl: fmt.Sprintf("https://i.ytimg.com/vi/%s/hqdefault.jpg", hit.Id),
-			Snippet:      hit.Formatted.Transcript,
+			Snippet:      cleanedSnippet,
 			MatchesCount: len(hit.MatchesPosition.Transcript),
 		}
 	}
@@ -76,4 +79,22 @@ func getTimestampSeconds(text string) (string, error) {
 	reference, _ := time.Parse(time.TimeOnly, "00:00:00")
 	timestampSeconds := timestamp.Sub(reference).Seconds()
 	return strconv.Itoa(int(timestampSeconds)), nil
+}
+
+func cleanSnippet(text string) string {
+	var sb strings.Builder
+	for i, char := range text {
+		// skip the '>' in '-->'
+		if i > 0 && text[i-1] == '-' {
+			continue
+		}
+		// skip the char only if it is not a letter and space
+		// and if it is not '<' '/' '>' so that the <mark> </mark> html
+		// tags are preserved
+		if !unicode.IsLetter(char) && char != ' ' && char != '<' && char != '>' && char != '/' {
+			continue
+		}
+		sb.WriteRune(char)
+	}
+	return sb.String()
 }
