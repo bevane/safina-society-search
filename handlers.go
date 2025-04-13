@@ -23,7 +23,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	}
 	resRaw, err := cfg.searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
 		AttributesToCrop:      []string{"transcript"},
-		CropLength:            40,
+		CropLength:            200,
 		AttributesToHighlight: []string{"title", "transcript"},
 		HighlightPreTag:       "<mark>",
 		HighlightPostTag:      "</mark>",
@@ -45,7 +45,17 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	for i, hit := range searchResponse.Hits {
 		// will get the left most timestamp in the snippet
 		timestampSeconds, err := getTimestampSeconds(hit.Formatted.Transcript)
+		// remove timestamps and anything that are not subtitles from
+		// the snippet
 		cleanedSnippet := cleanSnippet(hit.Formatted.Transcript)
+		// sometimes timestamps crowd the snippet and only a few words
+		// remain after cleaning it due to a bug in the transcription
+		// process which makes timestamps word by word instead of
+		// making timestamps for long sentences
+		// To mitigate this problem, we intially get a very large snippet
+		// and then truncate it after removing the timestamps so that
+		// more words will remain in the snippet
+		cleanedAndTruncatedSnippet := truncateSnippetAroundCenter(cleanedSnippet, 40)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -54,7 +64,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 			// construct url linking to timestamp of the crop/snippet
 			Url:          fmt.Sprintf("https://youtu.be/%s&t=%s", hit.Id, timestampSeconds),
 			ThumbnailUrl: fmt.Sprintf("https://i.ytimg.com/vi/%s/hqdefault.jpg", hit.Id),
-			Snippet:      cleanedSnippet,
+			Snippet:      cleanedAndTruncatedSnippet,
 			MatchesCount: len(hit.MatchesPosition.Transcript),
 		}
 	}
@@ -97,4 +107,16 @@ func cleanSnippet(text string) string {
 		sb.WriteRune(char)
 	}
 	return sb.String()
+}
+
+func truncateSnippetAroundCenter(text string, cropLength int) string {
+	words := strings.Fields(text)
+	if len(words) <= cropLength*2 {
+		return text
+	}
+	mid := len(words) / 2
+	start := mid - cropLength
+	end := mid + cropLength
+	truncatedWords := words[start:end]
+	return strings.Join(truncatedWords, " ")
 }
