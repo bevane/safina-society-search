@@ -95,13 +95,18 @@ func cleanSnippet(text string) string {
 	var sb strings.Builder
 	for i, char := range text {
 		// skip the '>' in '-->'
-		if i > 0 && text[i-1] == '-' {
+		if i > 0 && char == '>' && text[i-1] == '-' {
 			continue
 		}
-		// skip the char only if it is not a letter and space
-		// and if it is not '<' '/' '>' so that the <mark> </mark> html
-		// tags are preserved
-		if !unicode.IsLetter(char) && char != ' ' && char != '<' && char != '>' && char != '/' {
+		// skip the second '-' in '-->'
+		if i > 0 && char == '-' && text[i-1] == '-' {
+			continue
+		}
+		// skip the first '-' in '-->'
+		if i > 0 && char == '-' && text[i-1] == ' ' {
+			continue
+		}
+		if unicode.IsNumber(char) || char == ':' || char == ',' {
 			continue
 		}
 		sb.WriteRune(char)
