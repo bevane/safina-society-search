@@ -78,10 +78,10 @@ func getTimestampSeconds(text string) (string, error) {
 	}
 	var timestampStr string
 	r, _ := regexp.Compile(`(\d{2}:\d{2}:\d{2}),\d{3} -->`)
-	timestampStr = r.FindStringSubmatch(text)[1]
-	if timestampStr == "" {
+	if !r.MatchString(text) {
 		return "", fmt.Errorf("No timestamp found")
 	}
+	timestampStr = r.FindStringSubmatch(text)[1]
 	timestamp, err := time.Parse(time.TimeOnly, timestampStr)
 	if err != nil {
 		return "", err
