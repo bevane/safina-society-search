@@ -18,7 +18,7 @@ import (
 func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	query := r.FormValue("search")
 	if len(query) <= 1 {
-		views.Results(model.Results{}).Render(r.Context(), w)
+		views.InsufficientInput().Render(r.Context(), w)
 		return
 	}
 	resRaw, err := cfg.searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{

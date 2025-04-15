@@ -29,7 +29,8 @@ a {
   color: black;
 }
 
-.results-fail {
+.results-fail,
+.search-error {
   color: grey;
 }
 

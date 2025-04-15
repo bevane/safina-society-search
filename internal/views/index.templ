@@ -12,7 +12,7 @@ templ Index() {
 				name="search"
 				placeholder="Search..."
 				hx-post="/search"
-				hx-trigger="input[this.value.length > 1] changed delay:500ms, keyup[key=='Enter']"
+				hx-trigger="input changed delay:500ms, keyup[key=='Enter']"
 				hx-target="#results-container"
 			/>
 			<svg class="search-icon" height="30px" width="30px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512">
