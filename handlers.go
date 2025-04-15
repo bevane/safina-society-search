@@ -30,7 +30,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		ShowMatchesPosition:   true,
 	})
 	if err != nil {
-		fmt.Println(err)
+		views.InternalError().Render(r.Context(), w)
 		return
 	}
 
