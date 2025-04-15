@@ -107,7 +107,7 @@ func Results(searchResults model.Results) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		if searchResults.Items != nil {
+		if len(searchResults.Items) != 0 {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div><ul class=\"results\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -127,6 +127,11 @@ func Results(searchResults model.Results) templ.Component {
 				}
 			}
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</ul></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<div class=\"results-fail\">Your search did not match any videos</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

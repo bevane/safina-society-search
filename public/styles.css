@@ -29,12 +29,16 @@ a {
   color: black;
 }
 
+.results-fail {
+  color: grey;
+}
+
 .result-container {
   background: white;
   border-radius: 7px;
   display: flex;
   max-width: 800px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   position: relative;
   top: 0;
@@ -43,7 +47,7 @@ a {
 
 .result-container:hover {
   top: -2px;
-  box-shadow: 0 4px 5px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.3);
 }
 
 .result-container img {
@@ -103,12 +107,12 @@ mark {
 }
 
 input {
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, .87);
   outline-color: none;
   background-color: transparent;
-  border:none;
-  height:100%;
-  flex-grow:1;
+  border: none;
+  height: 100%;
+  flex-grow: 1;
   font-size: 15px;
   padding: 10px;
 }
