@@ -18,9 +18,15 @@ import (
 func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 	query := params.Get("q")
+	isHTMX := r.Header.Get("Hx-Request") != ""
 
 	if len(query) <= 1 {
-		views.InsufficientInput().Render(r.Context(), w)
+		errComponent := views.InsufficientInput()
+		if isHTMX {
+			errComponent.Render(r.Context(), w)
+		} else {
+			views.Index(query, errComponent).Render(r.Context(), w)
+		}
 		return
 	}
 	resRaw, err := cfg.searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
@@ -32,9 +38,15 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		ShowMatchesPosition:   true,
 	})
 	if err != nil {
-		views.InternalError().Render(r.Context(), w)
 		fmt.Println(err)
+		errComponent := views.InternalError()
+		if isHTMX {
+			errComponent.Render(r.Context(), w)
+		} else {
+			views.Index(query, errComponent).Render(r.Context(), w)
+		}
 		return
+
 	}
 
 	searchResponse := model.SearchResponseVideos{}
@@ -71,7 +83,13 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 			MatchesCount: len(hit.MatchesPosition.Transcript),
 		}
 	}
-	views.Results(results).Render(r.Context(), w)
+	resultsComponent := views.Results(results)
+	if isHTMX {
+		resultsComponent.Render(r.Context(), w)
+	} else {
+		views.Index(query, resultsComponent).Render(r.Context(), w)
+	}
+	return
 
 }
 

@@ -23,7 +23,10 @@ templ Result(videoResult model.Result) {
 }
 
 templ Results(searchResults model.Results) {
-	if len(searchResults.Items) != 0 {
+	<div id="results-container">
+	if len(searchResults.Items) == 0 {
+		<div class="results-fail">Your search did not match any videos</div>
+	} else {
 		<div>
 			<ul class="results">
 				for _, item := range searchResults.Items {
@@ -33,7 +36,6 @@ templ Results(searchResults model.Results) {
 				}
 			</ul>
 		</div>
-	} else {
-		<div class="results-fail">Your search did not match any videos</div>
 	}
+	</div>
 }

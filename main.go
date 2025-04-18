@@ -30,7 +30,7 @@ func main() {
 	app.searchClient = searchClient
 
 	publicHandler := http.StripPrefix("/public", http.FileServer(http.Dir("./public")))
-	http.Handle("/", templ.Handler(views.Index()))
+	http.Handle("/", templ.Handler(views.Index("", nil)))
 	http.Handle("/public/", publicHandler)
 	http.HandleFunc("GET /search", app.handlerSearch)
 	fmt.Printf("Server started on port %v\n", app.port)
