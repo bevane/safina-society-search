@@ -16,7 +16,9 @@ import (
 )
 
 func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
-	query := r.FormValue("search")
+	params := r.URL.Query()
+	query := params.Get("q")
+
 	if len(query) <= 1 {
 		views.InsufficientInput().Render(r.Context(), w)
 		return

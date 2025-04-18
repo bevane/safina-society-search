@@ -32,7 +32,7 @@ func main() {
 	publicHandler := http.StripPrefix("/public", http.FileServer(http.Dir("./public")))
 	http.Handle("/", templ.Handler(views.Index()))
 	http.Handle("/public/", publicHandler)
-	http.HandleFunc("POST /search", app.handlerSearch)
+	http.HandleFunc("GET /search", app.handlerSearch)
 	fmt.Printf("Server started on port %v\n", app.port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", app.port), nil))
 }
