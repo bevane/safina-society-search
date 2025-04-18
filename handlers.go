@@ -33,6 +33,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		views.InternalError().Render(r.Context(), w)
+		fmt.Println(err)
 		return
 	}
 
