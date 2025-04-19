@@ -29,7 +29,29 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	resRaw, err := cfg.searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
+	results, err := getSearchResults(query, cfg.searchClient)
+	if err != nil {
+		errComponent := views.InternalError()
+		if isHTMX {
+			errComponent.Render(r.Context(), w)
+		} else {
+			views.Index(query, errComponent).Render(r.Context(), w)
+		}
+		return
+	}
+
+	resultsComponent := views.Results(results)
+	if isHTMX {
+		resultsComponent.Render(r.Context(), w)
+	} else {
+		views.Index(query, resultsComponent).Render(r.Context(), w)
+	}
+	return
+
+}
+
+func getSearchResults(query string, searchClient meilisearch.ServiceManager) (model.Results, error) {
+	resRaw, err := searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
 		AttributesToCrop:      []string{"transcript"},
 		CropLength:            200,
 		AttributesToHighlight: []string{"title", "transcript"},
@@ -39,14 +61,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	})
 	if err != nil {
 		fmt.Println(err)
-		errComponent := views.InternalError()
-		if isHTMX {
-			errComponent.Render(r.Context(), w)
-		} else {
-			views.Index(query, errComponent).Render(r.Context(), w)
-		}
-		return
-
+		return model.Results{}, err
 	}
 
 	searchResponse := model.SearchResponseVideos{}
@@ -83,14 +98,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 			MatchesCount: len(hit.MatchesPosition.Transcript),
 		}
 	}
-	resultsComponent := views.Results(results)
-	if isHTMX {
-		resultsComponent.Render(r.Context(), w)
-	} else {
-		views.Index(query, resultsComponent).Render(r.Context(), w)
-	}
-	return
-
+	return results, nil
 }
 
 func getTimestampSeconds(text string) (string, error) {
