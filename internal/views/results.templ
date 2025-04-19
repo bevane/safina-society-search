@@ -22,7 +22,7 @@ templ Result(videoResult model.Result) {
 	</a>
 }
 
-templ Results(searchResults model.Results) {
+templ Results(searchResults model.Results, totalPages int, pageNumber int) {
 	<div id="results-container">
 	if len(searchResults.Items) == 0 {
 		<div class="results-fail">Your search did not match any videos</div>
@@ -37,5 +37,16 @@ templ Results(searchResults model.Results) {
 			</ul>
 		</div>
 	}
+		<div>
+			<button class="arrow left" disabled>&lt;</button>
+			for i := 1; i <= totalPages; i++ {
+				if i == pageNumber {
+					<button class="page active">{ fmt.Sprintf("%v", i) }</button>
+				} else {
+					<button class="page">{ fmt.Sprintf("%v", i) }</button>
+				}
+			}
+			<button class="arrow right">&gt;</button>
+		</div>
 	</div>
 }

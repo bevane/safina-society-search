@@ -18,6 +18,7 @@ import (
 func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 	query := params.Get("q")
+	page := params.Get("page")
 	isHTMX := r.Header.Get("Hx-Request") != ""
 
 	if len(query) <= 1 {
@@ -29,7 +30,20 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	results, err := getSearchResults(query, cfg.searchClient)
+
+	pageNumber, err := strconv.Atoi(page)
+
+	if err != nil || pageNumber < 1 || pageNumber > 3 {
+		errComponent := views.BadRequestPageNumber()
+		if isHTMX {
+			errComponent.Render(r.Context(), w)
+		} else {
+			views.Index(query, errComponent).Render(r.Context(), w)
+		}
+		return
+	}
+
+	results, totalPages, err := getSearchResults(query, pageNumber, cfg.searchClient)
 	if err != nil {
 		errComponent := views.InternalError()
 		if isHTMX {
@@ -40,7 +54,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resultsComponent := views.Results(results)
+	resultsComponent := views.Results(results, totalPages, pageNumber)
 	if isHTMX {
 		resultsComponent.Render(r.Context(), w)
 	} else {
@@ -50,7 +64,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func getSearchResults(query string, searchClient meilisearch.ServiceManager) (model.Results, error) {
+func getSearchResults(query string, page int, searchClient meilisearch.ServiceManager) (model.Results, int, error) {
 	resRaw, err := searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
 		AttributesToCrop:      []string{"transcript"},
 		CropLength:            200,
@@ -58,10 +72,12 @@ func getSearchResults(query string, searchClient meilisearch.ServiceManager) (mo
 		HighlightPreTag:       "<mark>",
 		HighlightPostTag:      "</mark>",
 		ShowMatchesPosition:   true,
+		Page:                  int64(page),
+		HitsPerPage:           10,
 	})
 	if err != nil {
 		fmt.Println(err)
-		return model.Results{}, err
+		return model.Results{}, 0, err
 	}
 
 	searchResponse := model.SearchResponseVideos{}
@@ -98,7 +114,7 @@ func getSearchResults(query string, searchClient meilisearch.ServiceManager) (mo
 			MatchesCount: len(hit.MatchesPosition.Transcript),
 		}
 	}
-	return results, nil
+	return results, int(searchResponse.TotalPages), nil
 }
 
 func getTimestampSeconds(text string) (string, error) {
