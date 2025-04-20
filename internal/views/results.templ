@@ -22,34 +22,36 @@ templ Result(videoResult model.Result) {
 	</a>
 }
 
-templ Results(searchResults model.Results, totalPages int, pageNumber int) {
+templ Results(searchResults model.Results, totalPages int, pageNumber int, query string) {
 	{{ isFirstPage := pageNumber == 1 }}
 	{{ isLastPage := pageNumber == totalPages }}
-	
 	<div id="results-container">
-	if len(searchResults.Items) == 0 {
-		<div class="results-fail">Your search did not match any videos</div>
-	} else {
-		<div>
-			<ul class="results">
-				for _, item := range searchResults.Items {
-					<li>
-						@Result(item)
-					</li>
-				}
-			</ul>
-		</div>
-	}
+		if len(searchResults.Items) == 0 {
+			<div class="results-fail">Your search did not match any videos</div>
+		} else {
+			<div>
+				<ul class="results">
+					for _, item := range searchResults.Items {
+						<li>
+							@Result(item)
+						</li>
+					}
+				</ul>
+			</div>
+		}
 		<div class="pagination">
 			<a class={ templ.KV("disabled", isFirstPage) }>&lt;</a>
 			for i := 1; i <= totalPages; i++ {
 				if i == pageNumber {
 					<a class="active">{ fmt.Sprintf("%v", i) }</a>
 				} else {
-					<a>{ fmt.Sprintf("%v", i) }</a>
+					<a href={ templ.URL(fmt.Sprintf("/search?q=%s&page=%v", query, i)) }>{ fmt.Sprintf("%v", i) }</a>
 				}
 			}
-			<a class={ templ.KV("disabled", isLastPage) }>&gt;</a>
+			<a
+				class={ templ.KV("disabled", isLastPage) }
+				href={ templ.URL(templ.KV(fmt.Sprintf("/search?q=%s&page=%v", query, pageNumber+1), !isLastPage)) }
+			>&gt;</a>
 		</div>
 	</div>
 }

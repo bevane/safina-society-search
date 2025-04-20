@@ -54,7 +54,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resultsComponent := views.Results(results, totalPages, pageNumber)
+	resultsComponent := views.Results(results, totalPages, pageNumber, query)
 	if isHTMX {
 		resultsComponent.Render(r.Context(), w)
 	} else {
