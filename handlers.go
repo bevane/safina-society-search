@@ -21,6 +21,9 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	page := params.Get("page")
 	isHTMX := r.Header.Get("Hx-Request") != ""
 
+	if len(query) == 0 {
+		return
+	}
 	if len(query) <= 1 {
 		errComponent := views.InsufficientInput()
 		if isHTMX {
