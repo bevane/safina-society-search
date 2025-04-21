@@ -40,7 +40,12 @@ templ Results(searchResults model.Results, totalPages int, pageNumber int, query
 			</div>
 		}
 		<div class="pagination">
-			<a class={ templ.KV("disabled", isFirstPage) }>&lt;</a>
+			<a
+				class={ templ.KV("disabled", isFirstPage) }
+				if pageNumber != 1 {
+					href={ templ.URL(fmt.Sprintf("/search?q=%s&page=%v", query, pageNumber-1)) }
+				}
+			>&lt;</a>
 			for i := 1; i <= totalPages; i++ {
 				if i == pageNumber {
 					<a class="active">{ fmt.Sprintf("%v", i) }</a>
@@ -50,7 +55,9 @@ templ Results(searchResults model.Results, totalPages int, pageNumber int, query
 			}
 			<a
 				class={ templ.KV("disabled", isLastPage) }
-				href={ templ.URL(templ.KV(fmt.Sprintf("/search?q=%s&page=%v", query, pageNumber+1), !isLastPage)) }
+				if pageNumber != totalPages {
+					href={ templ.URL(fmt.Sprintf("/search?q=%s&page=%v", query, pageNumber+1)) }
+				}
 			>&gt;</a>
 		</div>
 	</div>
