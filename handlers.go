@@ -24,7 +24,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	if len(query) == 0 {
 		return
 	}
-	if len(query) <= 1 {
+	if len(query) <= 2 {
 		errComponent := views.InsufficientInput()
 		if isHTMX {
 			errComponent.Render(r.Context(), w)
