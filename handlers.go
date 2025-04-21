@@ -22,6 +22,9 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	isHTMX := r.Header.Get("Hx-Request") != ""
 
 	if len(query) == 0 {
+		if !isHTMX {
+			views.Index(query, nil).Render(r.Context(), w)
+		}
 		return
 	}
 	if len(query) <= 2 {
