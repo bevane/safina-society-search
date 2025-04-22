@@ -73,7 +73,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 func getSearchResults(query string, page int, searchClient meilisearch.ServiceManager) (model.Results, int, error) {
 	resRaw, err := searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
 		AttributesToCrop:      []string{"transcript"},
-		CropLength:            200,
+		CropLength:            100,
 		AttributesToHighlight: []string{"title", "transcript"},
 		HighlightPreTag:       "<mark>",
 		HighlightPostTag:      "</mark>",
