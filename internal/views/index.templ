@@ -10,7 +10,7 @@ templ Index(query string, searchResponse templ.Component) {
 				class="search"
 				type="search"
 				name="q"
-				placeholder="Search..."
+				placeholder="Enter a keyword/question"
 				value={ query }
 				hx-get="/search"
 				hx-trigger="input changed delay:500ms, keyup[key=='Enter']"

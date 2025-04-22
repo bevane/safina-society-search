@@ -41,7 +41,7 @@ func Index(query string, searchResponse templ.Component) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<img width=\"100px\" src=\"/public/logo_large.png\"><h1><strong>SAFINA</strong> SOCIETY SEARCH</h1><h2>Search through Safina Society's YouTube videos</h2><div class=\"search-container\"><input class=\"search\" type=\"search\" name=\"q\" placeholder=\"Search...\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<img width=\"100px\" src=\"/public/logo_large.png\"><h1><strong>SAFINA</strong> SOCIETY SEARCH</h1><h2>Search through Safina Society's YouTube videos</h2><div class=\"search-container\"><input class=\"search\" type=\"search\" name=\"q\" placeholder=\"Enter a keyword/question\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
