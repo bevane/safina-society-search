@@ -45,6 +45,7 @@ a {
 .results-fail,
 .search-error {
   color: grey;
+  margin-top: 5px;
 }
 
 #results-container {
