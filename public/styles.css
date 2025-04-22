@@ -46,6 +46,7 @@ a {
   border-radius: 7px;
   display: flex;
   max-width: 800px;
+  max-height: 100px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   position: relative;
@@ -59,14 +60,13 @@ a {
 }
 
 .result-container img {
-  max-height: 80px;
+  max-height: 100px;
   width: auto;
 }
 
 .video-details {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   flex-grow: 1;
 }
 
@@ -76,7 +76,6 @@ a {
   font-weight: 600;
   margin: 5px;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
 }
 
@@ -85,6 +84,7 @@ a {
   margin: 5px;
   margin-top: -2px;
   flex-grow: 1;
+  overflow: scroll;
 }
 
 .matches-count {

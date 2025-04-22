@@ -73,7 +73,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 func getSearchResults(query string, page int, searchClient meilisearch.ServiceManager) (model.Results, int, error) {
 	resRaw, err := searchClient.Index("videos").SearchRaw(query, &meilisearch.SearchRequest{
 		AttributesToCrop:      []string{"transcript"},
-		CropLength:            100,
+		CropLength:            70,
 		AttributesToHighlight: []string{"title", "transcript"},
 		HighlightPreTag:       "<mark>",
 		HighlightPostTag:      "</mark>",
@@ -107,7 +107,6 @@ func getSearchResults(query string, page int, searchClient meilisearch.ServiceMa
 		// To mitigate this problem, we intially get a very large snippet
 		// and then truncate it after removing the timestamps so that
 		// more words will remain in the snippet
-		cleanedAndTruncatedSnippet := truncateSnippetAroundCenter(cleanedSnippet, 40)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -116,7 +115,7 @@ func getSearchResults(query string, page int, searchClient meilisearch.ServiceMa
 			// construct url linking to timestamp of the crop/snippet
 			Url:          fmt.Sprintf("https://youtu.be/%s&t=%s", hit.Id, timestampSeconds),
 			ThumbnailUrl: fmt.Sprintf("https://i.ytimg.com/vi/%s/hqdefault.jpg", hit.Id),
-			Snippet:      cleanedAndTruncatedSnippet,
+			Snippet:      cleanedSnippet,
 			MatchesCount: len(hit.MatchesPosition.Transcript),
 		}
 	}
@@ -163,16 +162,4 @@ func cleanSnippet(text string) string {
 		sb.WriteRune(char)
 	}
 	return sb.String()
-}
-
-func truncateSnippetAroundCenter(text string, cropLength int) string {
-	words := strings.Fields(text)
-	if len(words) <= cropLength {
-		return text
-	}
-	mid := len(words) / 2
-	start := mid - cropLength/2
-	end := mid + cropLength/2
-	truncatedWords := words[start:end]
-	return strings.Join(truncatedWords, " ")
 }
