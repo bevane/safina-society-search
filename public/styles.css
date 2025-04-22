@@ -67,6 +67,7 @@ a {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  flex-grow: 1;
 }
 
 .title {
@@ -83,6 +84,7 @@ a {
   font-size: 0.85rem;
   margin: 5px;
   margin-top: -2px;
+  flex-grow: 1;
 }
 
 .matches-count {
@@ -150,7 +152,7 @@ input:focus {
 
 .pagination .disabled {
   opacity: 0.6;
-  background-color: #e0e0e0; 
+  background-color: #e0e0e0;
   color: #a0a0a0;
   cursor: default;
 }
