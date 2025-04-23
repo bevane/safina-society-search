@@ -17,6 +17,7 @@ body {
 body h1 {
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
+  text-align: center;
 }
 
 body h1 strong {
@@ -27,6 +28,7 @@ body h2 {
   font-family: "Montserrat", sans-serif;
   margin-top: -10px;
   font-weight: 300;
+  text-align: center;
 }
 
 
@@ -41,6 +43,7 @@ body h2 {
   flex-direction: column;
   align-items: center;
   margin-bottom: 10px;
+  padding: 0 10px;
 }
 
 .result-container {
@@ -48,7 +51,6 @@ body h2 {
   border-radius: 7px;
   display: flex;
   max-width: 800px;
-  max-height: 105px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   position: relative;
