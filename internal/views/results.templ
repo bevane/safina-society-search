@@ -6,6 +6,9 @@ import "fmt"
 templ Result(videoResult model.Result) {
 	<a class="result" href={ templ.URL(videoResult.Url) } target="_blank">
 		<div class="result-container">
+			<div class="title">
+				@templ.Raw(videoResult.Title)
+			</div>
 			<div class="image-container">
 				// prevents layout shift during thumbnail load
 				<picture class="intrinsic">
@@ -13,9 +16,6 @@ templ Result(videoResult model.Result) {
 				</picture>
 			</div>
 			<div class="video-details">
-				<div class="title">
-					@templ.Raw(videoResult.Title)
-				</div>
 				<div class="snippet">
 					@templ.Raw(videoResult.Snippet)
 				</div>
