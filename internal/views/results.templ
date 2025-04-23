@@ -6,7 +6,12 @@ import "fmt"
 templ Result(videoResult model.Result) {
 	<a class="result" href={ templ.URL(videoResult.Url) } target="_blank">
 		<div class="result-container">
-			<img src={ videoResult.ThumbnailUrl }/>
+			<div class="image-container">
+				// prevents layout shift during thumbnail load
+				<picture class="intrinsic">
+					<img class="intrinsic-item" srcset={ videoResult.ThumbnailUrl } alt=""/>
+				</picture>
+			</div>
 			<div class="video-details">
 				<div class="title">
 					@templ.Raw(videoResult.Title)
