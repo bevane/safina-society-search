@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/a-h/templ"
 	"github.com/bevane/safina-society-search/internal/views"
@@ -33,6 +33,13 @@ func main() {
 	http.Handle("/", templ.Handler(views.Index("", nil)))
 	http.Handle("/public/", publicHandler)
 	http.HandleFunc("GET /search", app.handlerSearch)
+	server := &http.Server{
+		Addr:              fmt.Sprintf(":%d", app.port),
+		ReadHeaderTimeout: 3 * time.Second,
+	}
 	fmt.Printf("Server started on port %v\n", app.port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", app.port), nil))
+	err = server.ListenAndServe()
+	if err != nil {
+		panic(err)
+	}
 }
