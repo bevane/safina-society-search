@@ -66,8 +66,6 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	} else {
 		views.Index(query, resultsComponent).Render(r.Context(), w)
 	}
-	return
-
 }
 
 func getSearchResults(query string, page int, searchClient meilisearch.ServiceManager) (model.Results, int, error) {
@@ -124,12 +122,12 @@ func getSearchResults(query string, page int, searchClient meilisearch.ServiceMa
 
 func getTimestampSeconds(text string) (string, error) {
 	if text == "" {
-		return "", fmt.Errorf("Error getting timestamp: text is empty")
+		return "", fmt.Errorf("error getting timestamp: text is empty")
 	}
 	var timestampStr string
 	r, _ := regexp.Compile(`(\d{2}:\d{2}:\d{2}),\d{3} -->`)
 	if !r.MatchString(text) {
-		return "", fmt.Errorf("No timestamp found")
+		return "", fmt.Errorf("no timestamp found")
 	}
 	timestampStr = r.FindStringSubmatch(text)[1]
 	timestamp, err := time.Parse(time.TimeOnly, timestampStr)
