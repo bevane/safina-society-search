@@ -2,7 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -23,16 +25,25 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 
 	if len(query) == 0 {
 		if !isHTMX {
-			views.Index(query, nil).Render(r.Context(), w)
+			err := views.Index(query, nil).Render(r.Context(), w)
+			if err != nil {
+				slog.Error("unable to render full html for empty query", slog.Any("error", err))
+			}
 		}
 		return
 	}
 	if len(query) <= 2 {
 		errComponent := views.InsufficientInput()
 		if isHTMX {
-			errComponent.Render(r.Context(), w)
+			err := errComponent.Render(r.Context(), w)
+			if err != nil {
+				slog.Error("unable to render error component", slog.Any("error", err))
+			}
 		} else {
-			views.Index(query, errComponent).Render(r.Context(), w)
+			err := views.Index(query, errComponent).Render(r.Context(), w)
+			if err != nil {
+				slog.Error("unable to render full html with error", slog.Any("error", err))
+			}
 		}
 		return
 	}
@@ -42,9 +53,15 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	if err != nil || pageNumber < 1 || pageNumber > 3 {
 		errComponent := views.BadRequestPageNumber()
 		if isHTMX {
-			errComponent.Render(r.Context(), w)
+			err = errComponent.Render(r.Context(), w)
+			if err != nil {
+				slog.Error("unable to render error component", slog.Any("error", err))
+			}
 		} else {
-			views.Index(query, errComponent).Render(r.Context(), w)
+			err = views.Index(query, errComponent).Render(r.Context(), w)
+			if err != nil {
+				slog.Error("unable to render full html with error", slog.Any("error", err))
+			}
 		}
 		return
 	}
@@ -53,18 +70,30 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		errComponent := views.InternalError()
 		if isHTMX {
-			errComponent.Render(r.Context(), w)
+			err = errComponent.Render(r.Context(), w)
+			if err != nil {
+				slog.Error("unable to render error component", slog.Any("error", err))
+			}
 		} else {
-			views.Index(query, errComponent).Render(r.Context(), w)
+			err = views.Index(query, errComponent).Render(r.Context(), w)
+			if err != nil {
+				slog.Error("unable to render full html with error", slog.Any("error", err))
+			}
 		}
 		return
 	}
 
 	resultsComponent := views.Results(results, totalPages, pageNumber, query)
 	if isHTMX {
-		resultsComponent.Render(r.Context(), w)
+		err = resultsComponent.Render(r.Context(), w)
+		if err != nil {
+			slog.Error("unable to render result component", slog.Any("error", err))
+		}
 	} else {
-		views.Index(query, resultsComponent).Render(r.Context(), w)
+		err = views.Index(query, resultsComponent).Render(r.Context(), w)
+		if err != nil {
+			slog.Error("unable to full html with results", slog.Any("error", err))
+		}
 	}
 }
 
@@ -80,14 +109,14 @@ func getSearchResults(query string, page int, searchClient meilisearch.ServiceMa
 		HitsPerPage:           10,
 	})
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("unable to get search results from meilisearch", slog.Any("error", err))
 		return model.Results{}, 0, err
 	}
 
 	searchResponse := model.SearchResponseVideos{}
 	err = json.Unmarshal(*resRaw, &searchResponse)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("unable to unmarshal search results from meilisearch", slog.Any("error", err))
 	}
 	results := model.Results{
 		Items: make([]model.Result, len(searchResponse.Hits)),
@@ -106,7 +135,7 @@ func getSearchResults(query string, page int, searchClient meilisearch.ServiceMa
 		// and then truncate it after removing the timestamps so that
 		// more words will remain in the snippet
 		if err != nil {
-			fmt.Println(err)
+			slog.Error("unable to get timestamp in from transcript", slog.Any("error", err))
 		}
 		results.Items[i] = model.Result{
 			Title: hit.Formatted.Title,
@@ -122,12 +151,12 @@ func getSearchResults(query string, page int, searchClient meilisearch.ServiceMa
 
 func getTimestampSeconds(text string) (string, error) {
 	if text == "" {
-		return "", fmt.Errorf("error getting timestamp: text is empty")
+		return "", errors.New("error getting timestamp: text is empty")
 	}
 	var timestampStr string
 	r, _ := regexp.Compile(`(\d{2}:\d{2}:\d{2}),\d{3} -->`)
 	if !r.MatchString(text) {
-		return "", fmt.Errorf("no timestamp found")
+		return "", errors.New("no timestamp found")
 	}
 	timestampStr = r.FindStringSubmatch(text)[1]
 	timestamp, err := time.Parse(time.TimeOnly, timestampStr)

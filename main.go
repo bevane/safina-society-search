@@ -20,7 +20,10 @@ type Config struct {
 
 func main() {
 	app := Config{}
-	godotenv.Load(".env")
+	err := godotenv.Load(".env")
+	if err != nil {
+		panic(err)
+	}
 	app.port, _ = strconv.Atoi(os.Getenv("PORT"))
 
 	searchClient, err := meilisearch.Connect(os.Getenv("MEILISEARCH_URL"), meilisearch.WithAPIKey(os.Getenv("MEILISEARCH_API_KEY")))
