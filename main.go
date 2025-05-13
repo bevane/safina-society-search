@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
 	"os"
 	"strconv"
@@ -22,7 +23,7 @@ func main() {
 	app := Config{}
 	err := godotenv.Load(".env")
 	if err != nil {
-		panic(err)
+		slog.Info("No .env file available. Ensure the required env variables are set")
 	}
 	app.port, _ = strconv.Atoi(os.Getenv("PORT"))
 
