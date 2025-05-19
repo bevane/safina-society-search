@@ -7,7 +7,7 @@ on:
       - "*"
 
 jobs:
-  push_to_registry:
+  push_to_registry_and_deploy:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     permissions:
@@ -42,21 +42,16 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  deploy_to_vps:
-    name: Pull and Run Docker Image on VPS
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Deploy using ssh
-      uses: bevane/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.IP_ADDRESS }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        passphrase: ${{ secrets.PASSPHRASE }}
-        script: |
-          docker pull bevane50/safina
-          docker stop safina
-          docker rm safina
-          docker run --name safina -d --network host -e PORT=3000 --env-file=".env.docker" -p 3000:3000 -p 7700:7700 bevane50/safina
-          docker image prune
+      - name: Deploy using ssh
+        uses: bevane/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.IP_ADDRESS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          script: |
+            docker pull bevane50/safina
+            docker stop safina
+            docker rm safina
+            docker run --name safina -d --network host -e PORT=3000 --env-file=".env.docker" -p 3000:3000 -p 7700:7700 bevane50/safina
+            docker image prune
