@@ -21,7 +21,9 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 	query := params.Get("q")
 	page := params.Get("page")
+	pageNumber, err := strconv.Atoi(page)
 	isHTMX := r.Header.Get("Hx-Request") != ""
+	slog.Info(fmt.Sprintf("GET /search: isHTMX: %v, params: %v", isHTMX, params))
 
 	if len(query) == 0 {
 		if !isHTMX {
@@ -47,8 +49,6 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-
-	pageNumber, err := strconv.Atoi(page)
 
 	if err != nil || pageNumber < 1 || pageNumber > 3 {
 		errComponent := views.BadRequestPageNumber()
