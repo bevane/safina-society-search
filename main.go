@@ -29,7 +29,9 @@ func main() {
 
 	searchClient, err := meilisearch.Connect(os.Getenv("MEILISEARCH_URL"), meilisearch.WithAPIKey(os.Getenv("MEILISEARCH_API_KEY")))
 	if err != nil {
-		fmt.Printf("Unable to connect to meilisearch: %s\n", err.Error())
+		slog.Error("unable to connect to meilisearch", slog.Any("error", err))
+		os.Exit(1)
+
 	}
 	app.searchClient = searchClient
 
@@ -41,7 +43,7 @@ func main() {
 		Addr:              fmt.Sprintf(":%d", app.port),
 		ReadHeaderTimeout: 3 * time.Second,
 	}
-	fmt.Printf("Server started on port %v\n", app.port)
+	slog.Info(fmt.Sprintf("Server started on port %v\n", app.port))
 	err = server.ListenAndServe()
 	if err != nil {
 		panic(err)
