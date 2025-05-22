@@ -35,13 +35,15 @@ func main() {
 	}
 	app.searchClient = searchClient
 
+	serveMux := http.NewServeMux()
 	publicHandler := http.StripPrefix("/public", http.FileServer(http.Dir("./public")))
-	http.Handle("/", templ.Handler(views.Index("", nil)))
-	http.Handle("/public/", publicHandler)
-	http.HandleFunc("GET /search", app.handlerSearch)
+	serveMux.Handle("/", templ.Handler(views.Index("", nil)))
+	serveMux.Handle("/public/", publicHandler)
+	serveMux.HandleFunc("GET /search", app.handlerSearch)
 	server := &http.Server{
 		Addr:              fmt.Sprintf(":%d", app.port),
 		ReadHeaderTimeout: 3 * time.Second,
+		Handler:           serveMux,
 	}
 	slog.Info(fmt.Sprintf("Server started on port %v\n", app.port))
 	err = server.ListenAndServe()
