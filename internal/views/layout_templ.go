@@ -29,7 +29,7 @@ func layout() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta property=\"og:title\" content=\"Safina Society Search\"><meta property=\"og:description\" content=\"Search through Safina Society&#39;s YouTube videos\"><meta property=\"og:url\" content=\"https://safinasocietysearch.com\"><meta property=\"og:image\" content=\"https://safinasocietysearch.com/public/preview.jpg\"><meta name=\"twitter:card\" content=\"summary_large_image\"><meta name=\"twitter:title\" content=\"Safina Society Search\"><meta name=\"twitter:description\" content=\"Search through Safina Society&#39;s YouTube videos\"><meta name=\"twitter:image\" content=\"https://safinasocietysearch.com/public/preview.jpg\"><title>Safina Society Search</title><link rel=\"icon\" type=\"image/x-icon\" href=\"/public/favicon.ico\"><link rel=\"stylesheet\" href=\"/public/styles.css\"><script src=\"/public/htmx.min.js\" defer></script></head><body>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta property=\"og:title\" content=\"Safina Society Search\"><meta property=\"og:description\" content=\"Search through Safina Society&#39;s YouTube videos\"><meta property=\"og:url\" content=\"https://safinasocietysearch.com\"><meta property=\"og:image\" content=\"https://safinasocietysearch.com/public/preview.jpg\"><meta name=\"twitter:card\" content=\"summary_large_image\"><meta name=\"twitter:title\" content=\"Safina Society Search\"><meta name=\"twitter:description\" content=\"Search through Safina Society&#39;s YouTube videos\"><meta name=\"twitter:image\" content=\"https://safinasocietysearch.com/public/preview.jpg\"><title>Safina Society Search</title><link rel=\"icon\" type=\"image/x-icon\" href=\"/public/favicon.ico\"><link rel=\"stylesheet\" href=\"/public/styles.css\"><script src=\"/public/htmx.min.js\" defer></script></head><body><header><a href=\"/\"><img width=\"100px\" src=\"/public/logo.png\"></a><h1><strong>SAFINA</strong> SOCIETY SEARCH</h1><h2>Search through Safina Society's YouTube videos</h2></header><main>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -37,7 +37,7 @@ func layout() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</main><footer>For Issues/Feedback send an Email to <a href=\"mailto:hello@safinasocietysearch.com\">hello@safinasocietysearch.com</a></footer></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

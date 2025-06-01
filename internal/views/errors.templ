@@ -1,13 +1,19 @@
 package views
 
 templ InsufficientInput() {
-	<div class="search-error">Please enter more than 2 characters to search</div>
+	<div id="results-container">
+		<div class="search-error">Please enter more than 2 characters to search</div>
+	</div>
 }
 
 templ InternalError() {
-	<div class="search-error">Internal Server Error</div>
+	<div id="results-container">
+		<div class="search-error">Internal Server Error</div>
+	</div>
 }
 
 templ BadRequestPageNumber() {
-	<div class="search-error">Invalid page number: page number must be between 1 and 3</div>
+	<div id="results-container">
+		<div class="search-error">Invalid page number: page number must be between 1 and 5</div>
+	</div>
 }
