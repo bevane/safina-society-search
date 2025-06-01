@@ -29,7 +29,7 @@ func QuickStart() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<ul id=\"quick-start\"><li><div class=\"description\">Search a word</div><a class=\"example\" href=\"/search?q=Qurban&amp;page=1\">Qurban</a></li><li><div class=\"description\">Search a phrase</div><a class=\"example\" href=\"/search?q=Fast of Arafah&amp;page=1\">Fast of Arafah</a></li><li><div class=\"description\">Search within a specifc video<br>Type video ID + search term</div><a class=\"example\" href=\"/search?q=KwRUYjugvpk Arafah&amp;page=1\">KwRUYjugvpk Arafah</a></li></ul>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<ul id=\"quick-start\"><li><div class=\"description\">Search a word</div><a class=\"example\" href=\"/search?q=Qurban&amp;page=1\">Qurban</a></li><li><div class=\"description\">Search a phrase</div><a class=\"example\" href=\"/search?q=Fast of Arafah&amp;page=1\">Fast of Arafah</a></li><li><div class=\"description\">Search for an exact match<br>with double quotes around search term</div><a class=\"example\" href=\"/search?q=&#34;AI&#34;&amp;page=1\">\"AI\"</a></li><li><div class=\"description\">Search within a specifc video<br>with video ID + search term</div><a class=\"example\" href=\"/search?q=KwRUYjugvpk Arafah&amp;page=1\">KwRUYjugvpk Arafah</a></li></ul>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
