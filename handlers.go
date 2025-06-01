@@ -56,7 +56,7 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err != nil || pageNumber < 1 || pageNumber > 3 {
+	if err != nil || pageNumber < 1 || pageNumber > 5 {
 		errComponent := views.BadRequestPageNumber()
 		if isHTMX {
 			err = errComponent.Render(r.Context(), w)
