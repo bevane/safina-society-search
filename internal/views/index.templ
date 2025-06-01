@@ -2,9 +2,6 @@ package views
 
 templ Index(query string, searchResponse templ.Component) {
 	@layout() {
-		<img width="100px" src="/public/logo.png"/>
-		<h1><strong>SAFINA</strong> SOCIETY SEARCH</h1>
-		<h2>Search through Safina Society's YouTube videos</h2>
 		<div class="search-container">
 			<input
 				class="search"
@@ -87,6 +84,7 @@ templ Index(query string, searchResponse templ.Component) {
 			@searchResponse
 		} else {
 			<div id="results-container">
+				@QuickStart()
 			</div>
 		}
 	}

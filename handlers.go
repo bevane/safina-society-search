@@ -26,7 +26,13 @@ func (cfg *Config) handlerSearch(w http.ResponseWriter, r *http.Request) {
 	slog.Info(fmt.Sprintf("GET /search: isHTMX: %v, params: %v", isHTMX, params))
 
 	if len(query) == 0 {
-		if !isHTMX {
+		if isHTMX {
+			quickStartComponent := views.QuickStart()
+			err := quickStartComponent.Render(r.Context(), w)
+			if err != nil {
+				slog.Error("unable to render error component", slog.Any("error", err))
+			}
+		} else {
 			err := views.Index(query, nil).Render(r.Context(), w)
 			if err != nil {
 				slog.Error("unable to render full html for empty query", slog.Any("error", err))

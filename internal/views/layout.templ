@@ -20,7 +20,17 @@ templ layout() {
 			<script src="/public/htmx.min.js" defer></script>
 		</head>
 		<body>
-			{ children... }
+			<header>
+				<img width="100px" src="/public/logo.png"/>
+				<h1><strong>SAFINA</strong> SOCIETY SEARCH</h1>
+				<h2>Search through Safina Society's YouTube videos</h2>
+			</header>
+			<main>
+				{ children... }
+			</main>
+			<footer>
+				For Issues/Feedback send an Email to <a href="mailto:hello@safinasocietysearch.com">hello@safinasocietysearch.com</a>
+			</footer>
 		</body>
 	</html>
 }
