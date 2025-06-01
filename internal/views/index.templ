@@ -15,6 +15,7 @@ templ Index(query string, searchResponse templ.Component) {
 				hx-push-url="true"
 				hx-vals='{"page": "1"}'
 				hx-indicator="#loading"
+				autofocus
 			/>
 			<div id="loading">
 				<svg class="spinner htmx-indicator" width="30px" height="30px" viewBox="0 0 135 140" xmlns="http://www.w3.org/2000/svg" fill="#9747FF">
