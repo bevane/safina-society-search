@@ -1,5 +1,5 @@
 # ![Safina Society Search icon](public/favicon.ico) [Safina Society Search](https://safinasocietysearch.com/)
-[![GitHub Release](https://img.shields.io/github/v/release/bevane/safina-soceity-search?style=for-the-badge)](https://github.com/bevane/safina-society-search/releases/latest) [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bevane/safina-society-search/cd.yml?style=for-the-badge)](https://github.com/bevane/safina-society-search/actions?query=workflow:Deploy) [![Go Report Card](https://goreportcard.com/badge/github.com/bevane/safina-society-search?style=for-the-badge)](https://goreportcard.com/report/github.com/bevane/safina-society-search)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/bevane/safina-society-search/cd.yml?style=for-the-badge)](https://github.com/bevane/safina-society-search/actions?query=workflow:Deploy) [![Go Report Card](https://goreportcard.com/badge/github.com/bevane/safina-society-search?style=for-the-badge)](https://goreportcard.com/report/github.com/bevane/safina-society-search)
 
 [![Safina Society Preview](public/preview.jpg)](https://safinasocietysearch.com/)
 
