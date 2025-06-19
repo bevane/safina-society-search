@@ -3,7 +3,7 @@
 
 [![Safina Society Preview](public/preview.jpg)](https://safinasocietysearch.com/)
 
-## Motivation?
+## Motivation
 
 The Safina Society YouTube channel has a wealth of knowledge about Islam covering many different topics with over 1800 videos. YouTube's search function is not sufficient when you are looking to search if a certain question was discussed in a video or if you are trying to recall which video something was mentioned in.
 
