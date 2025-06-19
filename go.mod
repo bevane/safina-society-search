@@ -3,7 +3,7 @@ module github.com/bevane/safina-society-search
 go 1.24.1
 
 require (
-	github.com/a-h/templ v0.3.857
+	github.com/a-h/templ v0.3.898
 	github.com/joho/godotenv v1.5.1
 	github.com/meilisearch/meilisearch-go v0.31.0
 )
