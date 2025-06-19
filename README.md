@@ -24,4 +24,4 @@ Software Stack used: [Golang](https://go.dev/) + [Templ](https://templ.guide/) +
 
 Contributions are welcome. Fork the repo and open a pull request. Reach out [hello@safinasocietysearch.com](mailto:hello@safinasocietysearch.com) for any clarifications.
 
-Note: This repo does not provide access to the production Meilisearch instance. Please do any testing against your own local Meilisearch instance. If you still require access to the production instance to test a new feature/fix you are working on, reach out to me through the above email address.
+Note: This repo does not provide access to the production Meilisearch instance. Please do any testing against your own [local Meilisearch instance](docs/meilisearch.md). If you still require access to the production instance to test a new feature/fix you are working on, reach out to me through the above email address.
