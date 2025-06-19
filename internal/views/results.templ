@@ -30,40 +30,36 @@ templ Result(videoResult model.Result) {
 templ Results(searchResults model.Results, totalPages int, pageNumber int, query string) {
 	{{ isFirstPage := pageNumber == 1 }}
 	{{ isLastPage := pageNumber == totalPages }}
-	<div id="results-container">
-		if len(searchResults.Items) == 0 {
-			<div class="results-fail">Your search did not match any videos</div>
-		} else {
-			<div>
-				<ul class="results">
-					for _, item := range searchResults.Items {
-						<li>
-							@Result(item)
-						</li>
-					}
-				</ul>
-			</div>
-			<div class="pagination">
-				<a
-					class={ templ.KV("disabled", isFirstPage) }
-					if pageNumber != 1 {
-						href={ templ.URL(fmt.Sprintf("/search?q=%s&page=%v", query, pageNumber-1)) }
-					}
-				>&lt;</a>
-				for i := 1; i <= totalPages; i++ {
-					if i == pageNumber {
-						<a class="active">{ fmt.Sprintf("%v", i) }</a>
-					} else {
-						<a href={ templ.URL(fmt.Sprintf("/search?q=%s&page=%v", query, i)) }>{ fmt.Sprintf("%v", i) }</a>
-					}
+	if len(searchResults.Items) == 0 {
+		<div class="results-fail">Your search did not match any videos</div>
+	} else {
+		<ul class="results">
+			for _, item := range searchResults.Items {
+				<li>
+					@Result(item)
+				</li>
+			}
+		</ul>
+		<div class="pagination">
+			<a
+				class={ templ.KV("disabled", isFirstPage) }
+				if pageNumber != 1 {
+					href={ templ.URL(fmt.Sprintf("/search?q=%s&page=%v", query, pageNumber-1)) }
 				}
-				<a
-					class={ templ.KV("disabled", isLastPage) }
-					if pageNumber != totalPages {
-						href={ templ.URL(fmt.Sprintf("/search?q=%s&page=%v", query, pageNumber+1)) }
-					}
-				>&gt;</a>
-			</div>
-		}
-	</div>
+			>&lt;</a>
+			for i := 1; i <= totalPages; i++ {
+				if i == pageNumber {
+					<a class="active">{ fmt.Sprintf("%v", i) }</a>
+				} else {
+					<a href={ templ.URL(fmt.Sprintf("/search?q=%s&page=%v", query, i)) }>{ fmt.Sprintf("%v", i) }</a>
+				}
+			}
+			<a
+				class={ templ.KV("disabled", isLastPage) }
+				if pageNumber != totalPages {
+					href={ templ.URL(fmt.Sprintf("/search?q=%s&page=%v", query, pageNumber+1)) }
+				}
+			>&gt;</a>
+		</div>
+	}
 }

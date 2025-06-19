@@ -81,12 +81,12 @@ templ Index(query string, searchResponse templ.Component) {
 				</svg>
 			</div>
 		</div>
-		if searchResponse != nil {
-			@searchResponse
-		} else {
-			<div id="results-container">
+		<div id="results-container">
+			if searchResponse != nil {
+				@searchResponse
+			} else {
 				@QuickStart()
-			</div>
-		}
+			}
+		</div>
 	}
 }
